@@ -20,9 +20,10 @@ namespace DemoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CitiesWithoutPointsOfInterestDTO>>> GetCities()
+        public async Task<ActionResult<IEnumerable<CitiesWithoutPointsOfInterestDTO>>> 
+            GetCities([FromQuery] string? name, [FromQuery] string? searchQuery)
         {
-            var cityEntities = await _cityInfoRepository.GetCitiesAsync();
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync(name, searchQuery);
             
             
             /*

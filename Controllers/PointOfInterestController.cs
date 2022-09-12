@@ -179,7 +179,7 @@ namespace DemoApp.Controllers
                 return NotFound();
             }
 
-            _cityInfoRepository.DeletePointOfInteres(poi);
+            _cityInfoRepository.DeletePointOfInterest(poi);
             await _cityInfoRepository.SaveChangesAsync();
 
             _mailService.Send(

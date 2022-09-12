@@ -5,6 +5,7 @@ namespace DemoApp.Services
     public interface ICityInfoRepository
     {
         Task<IEnumerable<City>> GetCitiesAsync();
+        Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery);
         Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
 
         Task<City?> GetCityAsync(int cityId, bool includePoi);        
@@ -14,7 +15,7 @@ namespace DemoApp.Services
         Task<bool> SaveChangesAsync();
 
         Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest poi);
-
-        void DeletePointOfInteres(PointOfInterest poi);
+        
+        void DeletePointOfInterest(PointOfInterest poi);
     }
 }

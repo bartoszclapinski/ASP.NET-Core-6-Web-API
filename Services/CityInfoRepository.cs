@@ -18,7 +18,7 @@ namespace DemoApp.Services
             return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<City>, PaginationMetaData)> GetCitiesAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
         {
             //  Collection to start from
             var collection = _context.Cities as IQueryable<City>;
@@ -35,11 +35,16 @@ namespace DemoApp.Services
                 collection = collection.Where(a => a.Name.Contains(searchQuery) || 
                     (a.Description != null && a.Description.Contains(searchQuery)));
             }
+
+            var totalItemCount = await collection.CountAsync();
+            var paginationMetaData = new PaginationMetaData(totalItemCount, pageSize, pageNumber);
             
-            return await collection.OrderBy(c => c.Name)
+            var collectionToReturn  = await collection.OrderBy(c => c.Name)
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
-                .ToListAsync();            
+                .ToListAsync();   
+            
+            return (collectionToReturn, paginationMetaData);
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePoi)

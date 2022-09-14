@@ -2,6 +2,7 @@
 using DemoApp.Models;
 using DemoApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace DemoApp.Controllers
 {
@@ -34,8 +35,9 @@ namespace DemoApp.Controllers
                 pageSize = maxCitiesPageSize;
             }
 
-            var cityEntities = await _cityInfoRepository.GetCitiesAsync(name, searchQuery, pageNumber, pageSize);
-                        
+            var (cityEntities, paginationMetaData) = await _cityInfoRepository.GetCitiesAsync(name, searchQuery, pageNumber, pageSize);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetaData));
             /*
             var results = new List<CitiesWithoutPointsOfInterestDTO>();
             foreach (var cityEntity in cityEntities)

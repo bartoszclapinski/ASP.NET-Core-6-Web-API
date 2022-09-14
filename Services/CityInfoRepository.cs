@@ -18,13 +18,8 @@ namespace DemoApp.Services
             return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery)
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery, int pageNumber, int pageSize)
         {
-            if (string.IsNullOrEmpty(name) && string.IsNullOrWhiteSpace(searchQuery))
-            {
-                return await GetCitiesAsync();
-            }
-
             //  Collection to start from
             var collection = _context.Cities as IQueryable<City>;
 
@@ -41,7 +36,10 @@ namespace DemoApp.Services
                     (a.Description != null && a.Description.Contains(searchQuery)));
             }
             
-            return await collection.OrderBy(c => c.Name).ToListAsync();            
+            return await collection.OrderBy(c => c.Name)
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToListAsync();            
         }
 
         public async Task<City?> GetCityAsync(int cityId, bool includePoi)

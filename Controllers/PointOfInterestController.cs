@@ -154,7 +154,7 @@ namespace DemoApp.Controllers
             }
             
             if (!TryValidateModel(poiToPatch))
-            {
+            { 
                 return BadRequest(ModelState);
             }
 

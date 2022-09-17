@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DemoApp.Models;
 using DemoApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace DemoApp.Controllers
 {    
     [ApiController]
-    [Route("api/cities/{cityId}/pointsofinterest")]
+    //[Authorize(Policy = "Administrator")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/cities/{cityId}/pointsofinterest")]
     public class PointOfInterestController : ControllerBase
     {
         private readonly ILogger<PointOfInterestController> _logger;
@@ -32,6 +35,12 @@ namespace DemoApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PointOfInterestDTO>>> GetPoi(int cityId)
         {
+/*            var cityName = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value;
+            if (!await _cityInfoRepository.CityNameMatchesCityId(cityName, cityId))
+            {
+                return Forbid();
+            }
+*/
             if (!await _cityInfoRepository.CityExistsAsync(cityId))
             {
                 _logger.LogInformation(

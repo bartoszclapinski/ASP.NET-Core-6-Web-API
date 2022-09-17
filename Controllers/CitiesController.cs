@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using DemoApp.Models;
 using DemoApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace DemoApp.Controllers
 {
     [ApiController]
-    [Route("api/cities")]
+    //[Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/cities")]
     public class CitiesController : ControllerBase
     {
         private readonly ICityInfoRepository _cityInfoRepository;

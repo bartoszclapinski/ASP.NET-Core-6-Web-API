@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DemoApp.Controllers
 {    
     [ApiController]
-    //[Authorize(Policy = "Administrator")]
+    [Authorize(Policy = "Administrator")]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/cities/{cityId}/pointsofinterest")]
     public class PointOfInterestController : ControllerBase
@@ -36,7 +36,7 @@ namespace DemoApp.Controllers
         public async Task<ActionResult<IEnumerable<PointOfInterestDTO>>> GetPoi(int cityId)
         {
 /*            var cityName = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value;
-            if (!await _cityInfoRepository.CityNameMatchesCityId(cityName, cityId))
+            if (!await _cityInfoRepository.CityNameMatchesCityId(cityName, cityId))0
             {
                 return Forbid();
             }
